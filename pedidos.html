@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Autoparts - Realizar pedido</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #433d97;
+            --primary-hover: #5149b0;
+            --bg-dark: #0f1117;
+            --bg-card: #1a1d26;
+            --bg-input: #252936;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #2e3445;
+            --success: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background: rgba(15, 17, 23, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .logo i,
+        .logo span {
+            color: var(--primary);
+        }
+
+        .back {
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            padding: .65rem 1rem;
+            border-radius: 8px;
+        }
+
+        .back:hover {
+            border-color: var(--primary);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            font-size: 2.4rem;
+            margin-bottom: .5rem;
+        }
+
+        .page-title h1 span {
+            color: var(--primary);
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .card h2 {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: .4rem;
+            font-weight: 600;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: .85rem 1rem;
+            background: var(--bg-input);
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: .9rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .order-item small {
+            color: var(--text-muted);
+        }
+
+        .empty {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .total span:last-child {
+            color: var(--success);
+        }
+
+        .btn-order {
+            width: 100%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1.2rem;
+        }
+
+        .btn-order:hover {
+            background: var(--primary-hover);
+        }
+
+        .clear-btn {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-light);
+            padding: .8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: .7rem;
+        }
+
+        .clear-btn:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 750px) {
+            .order-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="legacy.html" class="logo">
+            <i class="fas fa-car"></i>
+            Legacy<span> Autoparts</span>
+        </a>
+
+        <a href="legacy.html" class="back">
+            <i class="fas fa-arrow-left"></i>
+            Volver a productos
+        </a>
+    </nav>
+</header>
+
+<main>
+    <div class="page-title">
+        <h1>Realizar <span>pedido</span></h1>
+        <p>Completa tus datos y confirma los repuestos que deseas comprar.</p>
+    </div>
+
+    <div class="order-grid">
+
+        <section class="card">
+            <h2><i class="fas fa-user"></i> Datos del cliente</h2>
+
+            <form id="pedidoForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" required placeholder="Ej. Juan Pérez">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" required placeholder="Ej. 7000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" required placeholder="Ej. correo@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección de entrega</label>
+                    <textarea id="direccion" required placeholder="Escribe la dirección donde deseas recibir tu pedido"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="pago">Método de pago</label>
+                    <select id="pago" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="Efectivo">Efectivo contra entrega</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                        <option value="Transferencia">Transferencia bancaria</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-order">
+                    <i class="fas fa-check"></i>
+                    Confirmar pedido
+                </button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2><i class="fas fa-shopping-cart"></i> Resumen del pedido</h2>
+
+            <div id="listaPedido"></div>
+
+            <div class="total">
+                <span>Total</span>
+                <span id="totalPedido">$0.00</span>
+            </div>
+
+            <button class="clear-btn" onclick="vaciarCarrito()">
+                <i class="fas fa-trash"></i>
+                Vaciar carrito
+            </button>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    <strong>Legacy Autoparts</strong>
+    <p>Las mejores piezas para tu auto</p>
+    <p>© 2026 Legacy Autoparts</p>
+</footer>
+
+<script>
+    let carrito = JSON.parse(localStorage.getItem("carritoLegacy")) || [];
+
+    function mostrarPedido() {
+        const lista = document.getElementById("listaPedido");
+        const totalElemento = document.getElementById("totalPedido");
+
+        lista.innerHTML = "";
+        let total = 0;
+
+        if (carrito.length === 0) {
+            lista.innerHTML = '<div class="empty">No hay productos en el carrito.<br>Regresa a productos para agregar repuestos.</div>';
+            totalElemento.textContent = "$0.00";
+            return;
+        }
+
+        carrito.forEach(function(producto, index) {
+            total += Number(producto.precio);
+
+            lista.innerHTML += `
+                <div class="order-item">
+                    <div>
+                        <strong>${producto.nombre}</strong><br>
+                        <small>Producto ${index + 1}</small>
+                    </div>
+                    <strong>$${Number(producto.precio).toFixed(2)}</strong>
+                </div>
+            `;
+        });
+
+        totalElemento.textContent = "$" + total.toFixed(2);
+    }
+
+    function vaciarCarrito() {
+        if (carrito.length === 0) return;
+
+        if (confirm("¿Seguro que quieres vaciar el carrito?")) {
+            carrito = [];
+            localStorage.removeItem("carritoLegacy");
+            mostrarPedido();
+        }
+    }
+
+    // ========== CONFIGURACIÓN GOOGLE SHEETS ==========
+    // Pega aquí la MISMA URL que usaste en legacy.html (termina en /exec)
+    const API_URL = "https://script.google.com/a/macros/clases.edu.sv/s/AKfycbzvM0Bjh0QRf1UP9dmsBB_ZhgPLWQ06QLf69_QWYGrz9XtNwDmOBxt1lEJVKkVNR2h3wA/exec";
+
+    async function enviarPedido(datos) {
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "pedido",
+                    ...datos
+                })
+            });
+
+            const resultado = await response.json();
+
+            if (resultado.success) {
+                alert("¡Pedido enviado correctamente!");
+                carrito = [];
+                localStorage.removeItem("carritoLegacy");
+                mostrarPedido();
+                document.getElementById("pedidoForm").reset();
+            } else {
+                alert("Error al guardar el pedido: " + (resultado.error || "Desconocido"));
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error de conexión. Intenta de nuevo.");
+        }
+    }
+
+    document.getElementById("pedidoForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        if (carrito.length === 0) {
+            alert("Agrega al menos un producto antes de realizar el pedido.");
+            return;
+        }
+
+        const nombre = document.getElementById("nombre").value;
+        const telefono = document.getElementById("telefono").value;
+        const correo = document.getElementById("correo").value;
+        const direccion = document.getElementById("direccion").value;
+        const pago = document.getElementById("pago").value;
+
+        let total = carrito.reduce(function(suma, producto) {
+            return suma + Number(producto.precio);
+        }, 0);
+
+        const datosPedido = {
+            nombre: nombre,
+            telefono: telefono,
+            correo: correo,
+            direccion: direccion,
+            pago: pago,
+            total: total.toFixed(2),
+            productos: carrito
+        };
+
+        enviarPedido(datosPedido);
+    });
+
+    mostrarPedido();
+</script>
+
+</body>
+</html>

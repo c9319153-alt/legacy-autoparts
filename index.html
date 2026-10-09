@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Autoparts - Piezas y Repuestos Automotrices</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #433d97;
+            --primary-hover: #433d97;
+            --bg-dark: #0f1117;
+            --bg-card: #1a1d26;
+            --bg-input: #252936;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #2e3445;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        header {
+            background-color: rgba(15, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .navbar {
+            max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
+        .logo i, .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { font-weight: 600; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+        .cart-btn {
+            position: relative; background: var(--bg-input); border: 1px solid var(--border-color);
+            color: #fff; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer;
+            font-size: 1rem; transition: 0.3s; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .cart-btn:hover { border-color: var(--primary); }
+        .cart-count {
+            background: var(--primary); color: white; font-size: 0.75rem; font-weight: bold;
+            padding: 0.2rem 0.5rem; border-radius: 50%; min-width: 1.4rem; text-align: center;
+        }
+
+        .hero {
+            position: relative; padding: 5rem 1.5rem 7rem;
+            background: linear-gradient(rgba(15,17,23,0.85), rgba(15,17,23,0.95)),
+                url('https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&q=80&w=1600') center/cover no-repeat;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .search-container {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            padding: 1.5rem; border-radius: 12px; max-width: 1000px;
+            margin: -3rem auto 0; position: relative; z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .search-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;
+        }
+        .form-group select, .form-group input {
+            width: 100%; padding: 0.8rem 1rem; background: var(--bg-input);
+            border: 1px solid var(--border-color); border-radius: 8px; color: #fff;
+            outline: none; font-size: 0.95rem; transition: border-color 0.3s;
+        }
+        .form-group select:focus, .form-group input:focus { border-color: var(--primary); }
+        .btn-search, .btn-clear-search {
+            border: none; border-radius: 8px; padding: 0.8rem; font-weight: 700;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
+            justify-content: center; gap: 0.5rem;
+        }
+        .btn-search { background: var(--primary); color: white; }
+        .btn-search:hover { background: var(--primary-hover); }
+        .btn-clear-search {
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-muted);
+        }
+        .btn-clear-search:hover { border-color: var(--danger); color: var(--danger); }
+
+        .features {
+            max-width: 1200px; margin: 4rem auto; padding: 0 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;
+        }
+        .feature-box {
+            background: var(--bg-card); padding: 1.5rem; border-radius: 10px;
+            border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1.2rem;
+        }
+        .feature-box i { font-size: 2rem; color: var(--primary); }
+        .feature-box h4 { font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .feature-box p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .products-section { max-width: 1200px; margin: 4rem auto; padding: 0 1.5rem; }
+        .section-title {
+            font-size: 2rem; margin-bottom: 0.5rem;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .section-title span { color: var(--primary); }
+        .results-info { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem;
+        }
+        .product-card {
+            width: 100%; min-width: 0; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s; cursor: pointer;
+        }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .product-img { width: 100%; height: 180px; object-fit: cover; background: #252936; }
+        .product-info { padding: 1.2rem; }
+        .product-category {
+            font-size: 0.75rem; text-transform: uppercase; color: var(--primary); font-weight: 700;
+        }
+        .product-title {
+            font-size: 1.1rem; font-weight: 700; margin: 0.3rem 0;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .product-meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .product-code { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .product-bottom {
+            display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+        }
+        .product-price { font-size: 1.2rem; font-weight: 800; color: var(--success); }
+        .add-cart {
+            background: var(--primary); border: none; color: white;
+            padding: 0.6rem 0.8rem; border-radius: 7px; cursor: pointer; transition: 0.3s;
+        }
+        .add-cart:hover { background: var(--primary-hover); }
+        .no-results {
+            grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);
+        }
+        .no-results i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; display: block; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center; z-index: 2000;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; padding: 1rem;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 16px; max-width: 700px; width: 100%; max-height: 90vh;
+            overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s;
+        }
+        .modal-overlay.active .modal { transform: translateY(0); }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem; background: var(--bg-input);
+            border: 1px solid var(--border-color); color: var(--text-light);
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.3s; z-index: 10;
+        }
+        .modal-close:hover { border-color: var(--danger); color: var(--danger); }
+
+        .detail-content { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .detail-img { width: 100%; height: 100%; min-height: 280px; object-fit: cover; background: #252936; }
+        .detail-info { padding: 2rem; display: flex; flex-direction: column; }
+        .detail-category { font-size: 0.8rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
+        .detail-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+        .detail-code { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .detail-fit { font-size: 0.85rem; color: var(--primary); margin-bottom: 1rem; font-weight: 600; }
+        .detail-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; flex-grow: 1; margin-bottom: 1.5rem; }
+        .detail-price { font-size: 1.8rem; font-weight: 800; color: var(--success); margin-bottom: 1.2rem; }
+        .btn-add-detail {
+            background: var(--primary); color: white; border: none; border-radius: 10px;
+            padding: 0.9rem 1.5rem; font-weight: 700; font-size: 1rem; cursor: pointer;
+            transition: background 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+        }
+        .btn-add-detail:hover { background: var(--primary-hover); }
+
+        .cart-modal { max-width: 480px; }
+        .cart-header {
+            padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cart-header h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+        .cart-body { padding: 1rem 1.5rem; max-height: 50vh; overflow-y: auto; }
+        .cart-empty { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); }
+        .cart-empty i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+        .cart-item {
+            display: flex; align-items: center; gap: 1rem; padding: 0.9rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-info { flex-grow: 1; min-width: 0; }
+        .cart-item-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cart-item-price { color: var(--success); font-weight: 700; font-size: 0.9rem; }
+        .btn-remove {
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-muted);
+            width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.3s; flex-shrink: 0;
+        }
+        .btn-remove:hover { border-color: var(--danger); color: var(--danger); background: rgba(239,68,68,0.1); }
+        .cart-footer { padding: 1rem 1.5rem 1.5rem; border-top: 1px solid var(--border-color); }
+        .cart-total {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1rem; font-size: 1.15rem; font-weight: 700;
+        }
+        .cart-total span:last-child { color: var(--success); }
+        .cart-actions { display: flex; gap: 0.8rem; }
+        .btn-clear {
+            flex: 1; background: transparent; border: 1px solid var(--border-color);
+            color: var(--text-muted); padding: 0.75rem; border-radius: 8px; cursor: pointer;
+            font-weight: 600; transition: 0.3s;
+        }
+        .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+        .btn-checkout {
+            flex: 2; background: var(--primary); border: none; color: white;
+            padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 700;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn-checkout:hover { background: var(--primary-hover); }
+
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card); border: 1px solid var(--success); color: var(--text-light);
+            padding: 0.9rem 1.5rem; border-radius: 10px; display: flex; align-items: center;
+            gap: 0.7rem; z-index: 3000; opacity: 0; transition: transform 0.35s, opacity 0.35s;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast i { color: var(--success); }
+
+        footer {
+            margin-top: 5rem; background: #0a0c11; border-top: 1px solid var(--border-color);
+            padding: 3rem 1.5rem; text-align: center;
+        }
+        footer h3 { margin-bottom: 0.8rem; }
+        footer p { color: var(--text-muted); font-size: 0.9rem; }
+        .social-icons { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; }
+        .social-icons a {
+            width: 40px; height: 40px; border: 1px solid var(--border-color); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; transition: 0.3s;
+        }
+        .social-icons a:hover { color: var(--primary); border-color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .navbar { flex-wrap: wrap; gap: 1rem; }
+            .nav-links { order: 3; width: 100%; justify-content: center; gap: 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .section-title { font-size: 1.5rem; }
+            .detail-content { grid-template-columns: 1fr; }
+            .detail-img { min-height: 200px; max-height: 220px; }
+        }
+        @media (max-width: 500px) {
+            .nav-links { display: none; }
+            .header-actions { margin-left: auto; }
+            .hero { padding-top: 4rem; }
+            .hero h1 { font-size: 1.8rem; }
+            .search-container { margin-top: -2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="#" class="logo"><i class="fas fa-car"></i> Legacy<span>Autoparts</span></a>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#beneficios">Beneficios</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="pedidos.html">Hacer pedido</a></li>
+        </ul>
+        <div class="header-actions">
+            <button class="cart-btn" onclick="abrirCarrito()">
+                <i class="fas fa-shopping-cart"></i> Carrito
+                <span class="cart-count" id="cart-count">0</span>
+            </button>
+            <a href="pedidos.html" class="cart-btn"><i class="fas fa-file-invoice"></i> Pedidos</a>
+        </div>
+    </nav>
+</header>
+
+<section class="hero" id="inicio">
+    <div class="hero-content">
+        <h1>Encuentra los mejores <span>repuestos para tu auto</span></h1>
+        <p>Piezas de calidad, precios competitivos y todo lo que necesitas para mantener tu vehículo en perfecto estado.</p>
+    </div>
+</section>
+
+<section class="search-container">
+    <div class="search-grid">
+        <div class="form-group">
+            <select id="marca">
+                <option value="">Todas las marcas</option>
+                <option value="Honda">Honda</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Ford">Ford</option>
+                <option value="Chevrolet">Chevrolet</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="text" id="modelo" placeholder="Modelo (ej: Civic, Corolla...)">
+        </div>
+        <div class="form-group">
+            <input type="text" id="repuesto" placeholder="¿Qué repuesto buscas?">
+        </div>
+        <button class="btn-search" onclick="buscarRepuesto()">
+            <i class="fas fa-search"></i> Buscar
+        </button>
+        <button class="btn-clear-search" onclick="limpiarBusqueda()">
+            <i class="fas fa-times"></i> Limpiar
+        </button>
+    </div>
+</section>
+
+<section class="features" id="beneficios">
+    <div class="feature-box">
+        <i class="fas fa-truck-fast"></i>
+        <div><h4>Envíos rápidos</h4><p>Recibe tus repuestos de forma rápida y segura.</p></div>
+    </div>
+    <div class="feature-box">
+        <i class="fas fa-shield-halved"></i>
+        <div><h4>Productos garantizados</h4><p>Repuestos de calidad para tu vehículo.</p></div>
+    </div>
+    <div class="feature-box">
+        <i class="fas fa-tags"></i>
+        <div><h4>Buenos precios</h4><p>Precios competitivos y excelentes ofertas.</p></div>
+    </div>
+    <div class="feature-box">
+        <i class="fas fa-headset"></i>
+        <div><h4>Atención al cliente</h4><p>Estamos disponibles para ayudarte.</p></div>
+    </div>
+</section>
+
+<section class="products-section" id="productos">
+    <h2 class="section-title">Repuestos <span>destacados</span></h2>
+    <p class="results-info" id="results-info">Mostrando todos los productos</p>
+    <div class="products-grid" id="products-grid"></div>
+</section>
+
+<footer id="contacto">
+    <h3>Legacy Autoparts</h3>
+    <p>Las mejores piezas para tu auto</p>
+    <div class="social-icons">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <p style="margin-top: 1.5rem;">© 2026 Legacy Autoparts</p>
+</footer>
+
+<!-- MODAL DETALLE -->
+<div class="modal-overlay" id="modal-detalle">
+    <div class="modal">
+        <button class="modal-close" onclick="cerrarModal('modal-detalle')"><i class="fas fa-times"></i></button>
+        <div class="detail-content" id="detail-content"></div>
+    </div>
+</div>
+
+<!-- MODAL CARRITO -->
+<div class="modal-overlay" id="modal-carrito">
+    <div class="modal cart-modal">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Tu carrito</h3>
+            <button class="modal-close" onclick="cerrarModal('modal-carrito')" style="position:static;"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-body" id="cart-body"></div>
+        <div class="cart-footer" id="cart-footer" style="display:none;">
+            <div class="cart-total"><span>Total</span><span id="cart-total">$0.00</span></div>
+            <div class="cart-actions">
+                <button class="btn-clear" onclick="vaciarCarrito()"><i class="fas fa-trash"></i> Vaciar</button>
+                <button class="btn-checkout" onclick="irAPedidos()"><i class="fas fa-file-invoice"></i> Hacer pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toast-msg">Producto agregado</span>
+</div>
+
+<script>
+    // ========== CONFIGURACIÓN GOOGLE SHEETS ==========
+    // Pega aquí la URL que te dio Google Apps Script (termina en /exec)
+    const API_URL = "https://script.google.com/macros/s/AKfycbyZd58QknpzW-SqWH0tkIwmxMdaHFcdxtEW9HvzwhcbEAsZ8oBGbawxW0SSoaFMzdf9pw/exec";
+
+    let productos = [];
+    let productosFiltrados = [];
+    let carrito = JSON.parse(localStorage.getItem("carritoLegacy")) || [];
+
+    // Carga los productos desde Google Sheets
+    async function cargarProductos() {
+        try {
+            const response = await fetch(`${API_URL}?action=productos`);
+            if (!response.ok) throw new Error("Error de red");
+            const data = await response.json();
+
+            if (!Array.isArray(data)) {
+                throw new Error(data.error || "Respuesta inválida");
+            }
+
+            // Asegurar que el precio sea número
+            productos = data.map(p => ({
+                ...p,
+                id: Number(p.id),
+                precio: Number(p.precio)
+            }));
+            productosFiltrados = [...productos];
+            renderProductos(productos);
+        } catch (error) {
+            console.error("Error al cargar productos:", error);
+            document.getElementById("products-grid").innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>No se pudieron cargar los productos.</p>
+                    <p style="margin-top:0.5rem;font-size:0.9rem;">Revisa la URL de la API o tu conexión.</p>
+                </div>`;
+            document.getElementById("results-info").textContent = "Error al cargar productos";
+        }
+    }
+
+
+    function renderProductos(lista = productosFiltrados) {
+        const grid = document.getElementById("products-grid");
+        const info = document.getElementById("results-info");
+
+        if (lista.length === 0) {
+            grid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <p>No se encontraron productos con esos criterios.</p>
+                    <p style="margin-top:0.5rem;font-size:0.9rem;">Prueba con otra marca, modelo o nombre de repuesto.</p>
+                </div>`;
+            info.textContent = "0 productos encontrados";
+            return;
+        }
+
+        grid.innerHTML = lista.map(p => `
+            <article class="product-card" onclick="verDetalle(${p.id})">
+                <img class="product-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy"
+                     onerror="this.src='https://via.placeholder.com/400x300/1a1d26/94a3b8?text=Repuesto'">
+                <div class="product-info">
+                    <div class="product-category">${p.categoria}</div>
+                    <h3 class="product-title">${p.nombre}</h3>
+                    <div class="product-meta">${p.marca} · ${p.modelo}</div>
+                    <div class="product-code">Código: ${p.codigo}</div>
+                    <div class="product-bottom">
+                        <span class="product-price">$${p.precio.toFixed(2)}</span>
+                        <button class="add-cart" onclick="event.stopPropagation(); agregarCarrito(${p.id})">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join("");
+
+        info.textContent = lista.length === productos.length
+            ? `Mostrando todos los productos (${lista.length})`
+            : `${lista.length} producto${lista.length !== 1 ? "s" : ""} encontrado${lista.length !== 1 ? "s" : ""}`;
+    }
+
+    function buscarRepuesto() {
+        const marca = document.getElementById("marca").value.trim().toLowerCase();
+        const modelo = document.getElementById("modelo").value.trim().toLowerCase();
+        const repuesto = document.getElementById("repuesto").value.trim().toLowerCase();
+
+        productosFiltrados = productos.filter(p => {
+            const matchMarca = !marca || p.marca.toLowerCase() === marca;
+            const matchModelo = !modelo || p.modelo.toLowerCase().includes(modelo) || p.nombre.toLowerCase().includes(modelo);
+            const matchRepuesto = !repuesto ||
+                p.nombre.toLowerCase().includes(repuesto) ||
+                p.categoria.toLowerCase().includes(repuesto) ||
+                p.codigo.toLowerCase().includes(repuesto) ||
+                p.descripcion.toLowerCase().includes(repuesto);
+            return matchMarca && matchModelo && matchRepuesto;
+        });
+
+        renderProductos(productosFiltrados);
+        document.getElementById("productos").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function limpiarBusqueda() {
+        document.getElementById("marca").value = "";
+        document.getElementById("modelo").value = "";
+        document.getElementById("repuesto").value = "";
+        productosFiltrados = [...productos];
+        renderProductos();
+    }
+
+    document.getElementById("modelo").addEventListener("input", buscarRepuesto);
+    document.getElementById("repuesto").addEventListener("input", buscarRepuesto);
+    document.getElementById("marca").addEventListener("change", buscarRepuesto);
+
+    function verDetalle(id) {
+        const p = productos.find(prod => prod.id === id);
+        if (!p) return;
+
+        document.getElementById("detail-content").innerHTML = `
+            <img class="detail-img" src="${p.imagen}" alt="${p.nombre}"
+                 onerror="this.src='https://via.placeholder.com/400x300/1a1d26/94a3b8?text=Repuesto'">
+            <div class="detail-info">
+                <div class="detail-category">${p.categoria}</div>
+                <h2 class="detail-title">${p.nombre}</h2>
+                <div class="detail-code">Código: ${p.codigo}</div>
+                <div class="detail-fit"><i class="fas fa-car"></i> Compatible: ${p.marca} ${p.modelo}</div>
+                <p class="detail-desc">${p.descripcion}</p>
+                <div class="detail-price">$${p.precio.toFixed(2)}</div>
+                <button class="btn-add-detail" onclick="agregarCarrito(${p.id}); cerrarModal('modal-detalle')">
+                    <i class="fas fa-cart-plus"></i> Agregar al carrito
+                </button>
+            </div>
+        `;
+        abrirModal("modal-detalle");
+    }
+
+    function guardarCarrito() {
+        localStorage.setItem("carritoLegacy", JSON.stringify(carrito));
+    }
+
+    function actualizarContador() {
+        document.getElementById("cart-count").textContent = carrito.length;
+    }
+
+    function agregarCarrito(id) {
+        const p = productos.find(prod => prod.id === id);
+        if (!p) return;
+        carrito.push({ id: p.id, nombre: p.nombre, precio: p.precio, codigo: p.codigo });
+        guardarCarrito();
+        actualizarContador();
+        mostrarToast(`${p.nombre} agregado al carrito`);
+    }
+
+    function eliminarDelCarrito(index) {
+        const eliminado = carrito[index];
+        carrito.splice(index, 1);
+        guardarCarrito();
+        actualizarContador();
+        renderCarrito();
+        mostrarToast(`${eliminado.nombre} eliminado`);
+    }
+
+    function vaciarCarrito() {
+        if (carrito.length === 0) return;
+        if (confirm("¿Vaciar todo el carrito?")) {
+            carrito = [];
+            guardarCarrito();
+            actualizarContador();
+            renderCarrito();
+            mostrarToast("Carrito vaciado");
+        }
+    }
+
+    function renderCarrito() {
+        const body = document.getElementById("cart-body");
+        const footer = document.getElementById("cart-footer");
+
+        if (carrito.length === 0) {
+            body.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Tu carrito está vacío</p></div>`;
+            footer.style.display = "none";
+            return;
+        }
+
+        let total = 0;
+        body.innerHTML = carrito.map((item, index) => {
+            total += item.precio;
+            return `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.nombre}</div>
+                        <div class="cart-item-price">$${item.precio.toFixed(2)}</div>
+                    </div>
+                    <button class="btn-remove" onclick="eliminarDelCarrito(${index})" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>`;
+        }).join("");
+
+        document.getElementById("cart-total").textContent = `$${total.toFixed(2)}`;
+        footer.style.display = "block";
+    }
+
+    function abrirCarrito() {
+        renderCarrito();
+        abrirModal("modal-carrito");
+    }
+
+    function irAPedidos() {
+        window.location.href = "pedidos.html";
+    }
+
+    function abrirModal(id) {
+        document.getElementById(id).classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function cerrarModal(id) {
+        document.getElementById(id).classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".modal-overlay").forEach(overlay => {
+        overlay.addEventListener("click", e => {
+            if (e.target === overlay) {
+                overlay.classList.remove("active");
+                document.body.style.overflow = "";
+            }
+        });
+    });
+
+    function mostrarToast(mensaje) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-msg").textContent = mensaje;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    // Cargar productos desde Google Sheets al iniciar
+    cargarProductos();
+    actualizarContador();
+</script>
+</body>
+</html>
